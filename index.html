@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Messages</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Messages" />
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="phone-container">
+    <!-- Header with contact info -->
+    <div class="header">
+      <div class="back-section">
+        <span class="back-arrow">‹</span>
+        <span class="back-number" id="notificationCount">0</span>
+      </div>
+      <div class="profile-section">
+        <div class="profile-pic">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M20 21C20 16.5817 16.4183 13 12 13C7.58172 13 4 16.5817 4 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="contact-name" id="contactName">Contact</div>
+      </div>
+    </div>
+
+    <!-- Messages container -->
+    <div class="chat-background" id="messagesContainer">
+      <!-- Messages will be populated here by JavaScript -->
+    </div>
+
+    <!-- Input container -->
+    <div class="input-container">
+      <div class="plus-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <input type="text" class="input-field" placeholder="iMessage" readonly>
+      <div class="voice-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1Z" fill="currentColor"/>
+          <path d="M19 10V12C19 16.4183 15.4183 20 11 20H10C5.58172 20 2 16.4183 2 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 20V23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 23H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Home indicator -->
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- Edit panel (hidden by default) -->
+  <div class="edit-panel" id="editPanel">
+    <h3 id="panelTitle">Add/Edit Message</h3>
+    <form class="edit-form" id="editForm">
+      <!-- Configuration section (hidden by default) -->
+      <div class="form-group" id="configSection" style="display: none;">
+        <label>Contact Name</label>
+        <input type="text" id="configContactName" placeholder="Enter contact name">
+      </div>
+      <div class="form-group" id="configSection2" style="display: none;">
+        <label>Notification Count</label>
+        <input type="number" id="configNotificationCount" min="0" placeholder="0">
+      </div>
+      
+      <!-- Message editing section -->
+      <div class="form-group" id="messageSection">
+        <label>Message Text</label>
+        <textarea id="messageText" placeholder="Enter message text..."></textarea>
+      </div>
+      <div class="form-group" id="messageSection2">
+        <label>Time</label>
+        <input type="text" id="messageTime" placeholder="2:30 PM" value="">
+      </div>
+      <div class="form-group" id="messageSection3">
+        <label>Sender</label>
+        <select id="messageSender">
+          <option value="sent">Me (Blue bubble)</option>
+          <option value="received">Contact (Gray bubble)</option>
+        </select>
+      </div>
+      <div class="checkbox-group" id="messageSection4">
+        <div class="custom-checkbox" id="heartReaction" onclick="toggleCheckbox('heartReaction')"></div>
+        <label>Add heart reaction</label>
+      </div>
+      <div class="checkbox-group" id="messageSection5">
+        <div class="custom-checkbox" id="showDate" onclick="toggleCheckbox('showDate')"></div>
+        <label>Show as new date group</label>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" onclick="hideEditPanel()">Cancel</button>
+        <button type="button" class="btn btn-secondary" onclick="showConfigMode()" id="configBtn">Settings</button>
+        <button type="button" class="btn btn-danger" onclick="deleteMessage()" id="deleteBtn" style="display: none;">Delete</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
